@@ -1,0 +1,58 @@
+
+.logo {
+  height: 6em;
+  will-change: filter;
+  transition: filter 300ms;
+  z-index: 2;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 1em #646cffaa);
+}
+header{
+  height: 100px;
+  width: 100vw;
+}
+
+.logo img{
+  height: 100%;
+  width: 100%;
+}
+
+.centerHeader{
+  margin: 0 auto;
+  width: 300px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+.centerHeader p{
+  font-size: 2rem;
+}
+.chatBot{
+  flex-grow: 1;
+  width: 100%;
+  max-width: 60%;
+  min-width: 600px;
+  min-height: 400px;
+  background-color: light-dark(rgb(185, 181, 181),rgb(44, 44, 53));
+  border-radius: 16px;
+  margin: 5%;
+  height: 70vh;
+  display: flex;
+  margin: 20px auto;
+  
+}
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}

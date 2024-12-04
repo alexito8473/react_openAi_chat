@@ -1,0 +1,20 @@
+.Chat {
+    position: relative;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: 8px;
+    height: 100%;
+    overflow-y: auto;
+}
+.Message {
+    width: 90%;
+    padding: 10px 16px;
+    border-radius: 20px;
+    margin: 8px;
+    background: rgb(101, 101, 101);
+    &[data-role="user"] {
+        align-self: flex-end;
+        background: rgb(87, 87, 87);
+    }
+}
