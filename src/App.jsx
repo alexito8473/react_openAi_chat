@@ -7,29 +7,42 @@ import { Assistant } from "./assistants/openai";
 function App() {
   const assistant = new Assistant();
   const [isLoadMessage, setIsLoadMessage] = useState(false)
-  const [messages, setMessages] = useState([
-    {
-      role: 'assistant',
-      content: 'Hola muy buenas soy el mejor asistente,¿En que puedo ayudarte?'
-    }
-  ]);
+  const [messages, setMessages] = useState([]);
 
-  function addMessage(newContent, typeRole) {
-    setMessages((prevMessages) => [...prevMessages, { content: newContent, role: typeRole }]);
+  function updateLastMessageContent(content) {
+    setMessages((prevMessages) =>
+      prevMessages.map((message, index) =>
+        index === prevMessages.length - 1
+          ? { ...message, content: `${message.content}${content}` }
+          : message
+      )
+    );
+  }
+
+  function addMessage(message) {
+    setMessages((prevMessages) => [...prevMessages, message]);
   }
   async function handleContentSend(content) {
-    addMessage(content, "user");
-    setIsLoadMessage(true)
+    addMessage({ content, role: "user" });
+    setIsLoadMessage(true);
     try {
-      const result = await assistant.chat(content, messages);
-      addMessage(result, "assistant");
+      const result = await assistant.chatStream(content, messages);
+      let isFirstChunk = false;
+      for await (const chunk of result) {
+        if (!isFirstChunk) {
+          isFirstChunk = true;
+          addMessage({ content: "", role: "assistant" });
+          setIsLoadMessage(false);
+        }
+        updateLastMessageContent(chunk);
+      }
     } catch (error) {
-      addMessage(
-        "Sorry, I couldn't process your request. Please try again!",
-        "system",
-      );
+      addMessage({
+        content: "Sorry, I couldn't process your request. Please try again!",
+        role: "system",
+      });
+      setIsLoadMessage(false);
     }
-    setIsLoadMessage(false)
   }
   return (
     <>
